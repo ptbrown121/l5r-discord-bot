@@ -131,6 +131,26 @@ async def on_member_join(new_member):
     role_numbers_per_server[new_member.guild.name].update(roles)
     await save_stats_to_file()
 
+@client.event
+async def on_raw_reaction_add(payload):
+    logger.info(payload)
+    channel = client.get_channel(payload.channel_id)
+    message = await channel.fetch_message(payload.message_id)
+    logger.info(message)
+    if message.content.lower().startswith('!roll'):
+        command = message.content.split(' ')[1:]
+        if len(command) < 1:
+            await message.channel.send(
+                "4. Chosen by fair dice roll as the random number. "
+                "If you wanted something else, perhaps look at !help")
+        elif "k" in command[0]:
+            roll, success = dice.roll_and_keep(command)
+            await message.channel.send(
+                message.author.mention + " rolled **" + str(roll) + "**! \n" + success)
+        else:
+            await message.channel.send(
+                "Sorry, samurai-san, I didn't understand your request. \n"
+                "!help should be informative for you.")    
 
 @client.event
 async def on_message(message):
