@@ -180,6 +180,11 @@ async def on_message(message):
                     "!report and !stats provide links to win/loss statistics gathering and data"
         await message.channel.send(help_text)
 
+    if message.content.startswith('!map'):
+        logger.debug(str(message.author) + " asked for map!")
+        map_text = "The Miya Herald has provided this map for you http://talesofrokugan.com/map/" 
+        await message.channel.send(map_text)
+        
     if message.content.lower().startswith('!clan') and message.content.lower() != '!clans':
         command = message.content.split(' ')[1:]
         if len(command) == 1:
