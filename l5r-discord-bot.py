@@ -133,10 +133,8 @@ async def on_member_join(new_member):
 
 @client.event
 async def on_raw_reaction_add(payload):
-    logger.info(payload)
     channel = client.get_channel(payload.channel_id)
     message = await channel.fetch_message(payload.message_id)
-    logger.info(message)
     if message.content.lower().startswith('!roll'):
         command = message.content.split(' ')[1:]
         if len(command) < 1:
